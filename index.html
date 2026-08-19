@@ -99,6 +99,57 @@
     margin: 26px auto;
     background: linear-gradient(90deg, transparent, #d4af37, transparent);
   }
+
+  .btn-wrap {
+    margin-top: 36px;
+  }
+
+  button#salawatBtn {
+    padding: 16px 46px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: inherit;
+    color: #08251c;
+    background: linear-gradient(135deg, #f4e5b2, #d4af37);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  button#salawatBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.55);
+  }
+  button#salawatBtn:active {
+    transform: scale(0.96);
+  }
+
+  .counter-box {
+    margin-top: 22px;
+    display: inline-block;
+  }
+  .counter-label {
+    font-size: 15px;
+    color: #9fd8b8;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .counter-number {
+    font-size: clamp(30px, 6vw, 44px);
+    color: #f4e5b2;
+    text-shadow: 0 0 16px rgba(212, 175, 55, 0.5);
+    font-weight: bold;
+    transition: transform 0.15s ease;
+  }
+  .counter-number.pulse {
+    animation: pulse 0.35s ease;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
 </style>
 </head>
 <body>
@@ -111,6 +162,16 @@
       اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى<br>
       سَيِّدِنَا مُحَمَّدٍ ﷺ
     </p>
+
+    <div class="btn-wrap">
+      <button id="salawatBtn">صلِّ على النبي ﷺ</button>
+    </div>
+
+    <div class="counter-box">
+      <div class="counter-label">عدد مرات الصلاة على النبي</div>
+      <div class="counter-number" id="counterNum">0</div>
+    </div>
+
     <div class="ornament-bottom">۩</div>
   </div>
 
@@ -129,6 +190,23 @@
     star.style.animationDelay = (Math.random() * 3) + 's';
     document.body.appendChild(star);
   }
+
+  // salawat counter (persisted with localStorage)
+  const STORAGE_KEY = 'salawatCount';
+  let salawatCount = parseInt(localStorage.getItem(STORAGE_KEY), 10) || 0;
+
+  const btn = document.getElementById('salawatBtn');
+  const numEl = document.getElementById('counterNum');
+  numEl.textContent = salawatCount;
+
+  btn.addEventListener('click', () => {
+    salawatCount++;
+    localStorage.setItem(STORAGE_KEY, salawatCount);
+    numEl.textContent = salawatCount;
+    numEl.classList.remove('pulse');
+    void numEl.offsetWidth;
+    numEl.classList.add('pulse');
+  });
 </script>
 </body>
 </html>
